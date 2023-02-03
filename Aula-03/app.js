@@ -18,7 +18,7 @@ var entradaDados = readline.createInterface({
 
 
 });
-entradaDados.question('Por favor escolha uma calculadora: 1 = Soma,\n 2 = Subtração,\n 3 = Multiplicação\n 4= Divisão', function(tipo) {
+entradaDados.question('Por favor escolha uma calculadora: \n 1 = Soma \n 2 = Subtração \n 3 = Multiplicação \n 4= Divisão \n Escolha um número: ', function(tipo) {
     var tipoDeCalculadora = parseFloat(tipo);
     let resultado = 0;
 
@@ -49,5 +49,69 @@ entradaDados.question('Por favor escolha uma calculadora: 1 = Soma,\n 2 = Subtra
             })
 
         })
+    } else if (tipoDeCalculadora == '2') {
+        console.log('------------------------------Calculadora de Subtração------------------------------')
+        entradaDados.question('Digite o Primeiro Valor: \n', function(primeiroValor) {
+
+            let primeiroNumero = parseFloat(primeiroValor.replace(',', '.'))
+            entradaDados.question('Digite o Segundo Valor: \n', function(segundoValor) {
+                let segundoNumero = parseFloat(segundoValor.replace(',', '.'))
+                if (isNaN(primeiroValor) || isNaN(segundoValor)) {
+                    console.log('Erro: O caracter digitado não é um numero.')
+                } else if (primeiroValor == '' || segundoValor == '') {
+                    console.log('Erro: não é possivel fazer o calculo se estiver vazio.')
+
+                } else {
+                    resultado = (primeiroNumero) - (segundoNumero)
+                    console.log('O valor da Subtração é: ' + resultado)
+                }
+
+
+            })
+
+        })
+    } else if (tipoDeCalculadora == '3') {
+        console.log('------------------------------Calculadora de Multiplicação------------------------------')
+        entradaDados.question('Digite o Primeiro Valor: \n', function(primeiroValor) {
+
+            let primeiroNumero = parseFloat(primeiroValor.replace(',', '.'))
+            entradaDados.question('Digite o Segundo Valor: \n', function(segundoValor) {
+                let segundoNumero = parseFloat(segundoValor.replace(',', '.'))
+                if (isNaN(primeiroValor) || isNaN(segundoValor)) {
+                    console.log('Erro: O caracter digitado não é um numero.')
+                } else if (primeiroValor == '' || segundoValor == '') {
+                    console.log('Erro: não é possivel fazer o calculo se estiver vazio.')
+
+                } else {
+                    resultado = (primeiroNumero) * (segundoNumero)
+                    console.log('O valor da Multiplicação é: ' + resultado)
+                }
+
+
+            })
+
+        })
+    } else if (tipoDeCalculadora == '4') {
+        console.log('------------------------------Calculadora de Divisão------------------------------')
+        entradaDados.question('Digite o Primeiro Valor: \n', function(primeiroValor) {
+
+            let primeiroNumero = parseFloat(primeiroValor.replace(',', '.'))
+            entradaDados.question('Digite o Segundo Valor: \n', function(segundoValor) {
+                let segundoNumero = parseFloat(segundoValor.replace(',', '.'))
+                if (isNaN(primeiroValor) || isNaN(segundoValor)) {
+                    console.log('Erro: O caracter digitado não é um numero.')
+                } else if (primeiroValor == '' || segundoValor == '') {
+                    console.log('Erro: não é possivel fazer o calculo se estiver vazio.')
+
+                } else {
+                    resultado = (primeiroNumero) / (segundoNumero)
+                    console.log('O valor da Divisão é: ' + resultado)
+                }
+
+
+            })
+
+        })
     }
+
 })
