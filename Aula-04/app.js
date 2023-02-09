@@ -50,8 +50,16 @@ entradaDados.question('valor1: \n', function(numero1) {
                 //Fecha o objeto de entrada de dados (encerra o programa)
             } else {
 
+                //Recebe da função o calculo das operações (função que nós criamos)
                 resultado = matematica.calcular(valor1, valor2, operacao);
-                console.log(resultado);
+
+                //Verifica se o retorno da função é válido se for exibe o valor
+                //Se não encerra o programa 
+                //if (resultado == false && typeof(resultado) == 'boolean')
+                if (resultado === false)
+                    entradaDados.close();
+                else
+                    console.log(resultado);
 
             }
         })
