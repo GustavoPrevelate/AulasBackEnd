@@ -55,10 +55,10 @@ entradaDados.question('Qual é o genero do Estudante? [Aluna, Aluno] \n', functi
 
 
                 if (generoProfessor2.toLocaleUpperCase() === "PROFESSORA") {
-                    var generoProfessor2 = professora;
+                    var generoProfessor2 = "professora";
                     generoIncorreto = false
                 } else if (generoProfessor2.toLocaleUpperCase() === "PROFESSOR") {
-                    var generoProfessor2 = professor;
+                    var generoProfessor2 = "professor";
                     generoIncorreto = false
                 } else {
                     console.log('Digite Professor ou Professora para escolher o genero do seu Professor')
