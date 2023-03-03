@@ -36,7 +36,7 @@ const manipulandoElementos = function() {
     //console.log(typeof(listaNomes));
 
     //Verifica o tipo de dados do indice do array
-    console.log(typeof(listaNomes[1]));
+
 
     // Exibe todos os elementos do array
     console.log(listaNomes);
