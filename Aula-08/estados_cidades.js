@@ -22490,7 +22490,7 @@ let getDadosEstados = (sigla) => {
         if (estado.sigla == sigla.toUpperCase()) {
             dados = {
                 uf: estado.sigla,
-                nome: estado.nome,
+                descricao: estado.nome,
                 capital: estado.capital,
                 regiao: estado.regiao
             }
@@ -22504,4 +22504,75 @@ let getDadosEstados = (sigla) => {
 
 };
 
-console.log(getDadosEstados('sp'));
+//console.log(getDadosEstados('RJ'));
+
+let getCapitalEstado = (capital) => {
+
+    let dados = "";
+    
+    estadosCidades.estados.forEach((capitaisEstado) => {
+
+        //sigla, nome, capital, regiao
+        if (capitaisEstado.sigla == capital.toUpperCase()) {
+            dados = {
+                uf: capitaisEstado.sigla,
+                descricao: capitaisEstado.nome,
+                capital: capitaisEstado.capital
+                
+            }
+        }
+    })
+
+    return dados != "" ? dados : false
+
+};
+
+//console.log(getCapitalEstado('rj'));
+
+let getEstadosRegiao = (regiaoEstado) => {
+
+    let jSON = {}
+    let jRegiao = {}
+    let arrayRegiao = []
+
+    estadosCidades.estados.forEach(function(estado) {
+        if (regiaoEstado == estado.regiao) {
+            jRegiao = { uf: estado.sigla, descricao: estado.nome }
+            arrayRegiao.push(jRegiao)
+        }
+    })
+    jSON = { regiao: regiaoEstado, estados: arrayRegiao }
+
+    return jSON
+
+}
+ //console.log(getEstadosRegiao('Norte'));
+
+let getCapitalPais = () => {
+
+    let json = {}
+    let arrayCpitais = []
+    estadosCidades.estados.forEach(function(estado) {
+        if (estado.capital_pais != undefined) {
+
+            let dados = {
+                capital_atual: estado.capital_pais.capital,
+                uf: estado.sigla,
+                descricao: estado.nome,
+                capital: estado.capital,
+                regiao: estado.regiao,
+                capital_pais_ano_inicio: estado.capital_pais.ano_inicio,
+                capital_pais_ano_termino: estado.capital_pais.ano_fim,
+            }
+            arrayCpitais.push(dados)
+
+            // json = { capitais: arrayCpitais }
+            json.capitais = arrayCpitais
+
+        }
+
+    })
+    return json
+}
+ //console.log(getCapitalPais())
+
