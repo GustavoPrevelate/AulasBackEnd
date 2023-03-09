@@ -22509,7 +22509,7 @@ let getDadosEstados = (sigla) => {
 let getCapitalEstado = (capital) => {
 
     let dados = "";
-    
+
     estadosCidades.estados.forEach((capitaisEstado) => {
 
         //sigla, nome, capital, regiao
@@ -22518,7 +22518,7 @@ let getCapitalEstado = (capital) => {
                 uf: capitaisEstado.sigla,
                 descricao: capitaisEstado.nome,
                 capital: capitaisEstado.capital
-                
+
             }
         }
     })
@@ -22531,48 +22531,88 @@ let getCapitalEstado = (capital) => {
 
 let getEstadosRegiao = (regiaoEstado) => {
 
-    let jSON = {}
-    let jRegiao = {}
-    let arrayRegiao = []
+        let jSON = {}
+        let jRegiao = {}
+        let arrayRegiao = []
 
-    estadosCidades.estados.forEach(function(estado) {
-        if (regiaoEstado == estado.regiao) {
-            jRegiao = { uf: estado.sigla, descricao: estado.nome }
-            arrayRegiao.push(jRegiao)
-        }
-    })
-    jSON = { regiao: regiaoEstado, estados: arrayRegiao }
+        estadosCidades.estados.forEach(function(estado) {
+            if (regiaoEstado == estado.regiao) {
+                jRegiao = { uf: estado.sigla, descricao: estado.nome }
+                arrayRegiao.push(jRegiao)
+            }
+        })
+        jSON = { regiao: regiaoEstado, estados: arrayRegiao }
 
-    return jSON
+        return jSON
 
-}
- //console.log(getEstadosRegiao('Norte'));
+    }
+    //console.log(getEstadosRegiao('Norte'));
 
 let getCapitalPais = () => {
 
-    let json = {}
-    let arrayCpitais = []
-    estadosCidades.estados.forEach(function(estado) {
-        if (estado.capital_pais != undefined) {
+        let json = {}
+        let arrayCpitais = []
+        estadosCidades.estados.forEach(function(estado) {
+            if (estado.capital_pais != undefined) {
 
-            let dados = {
-                capital_atual: estado.capital_pais.capital,
-                uf: estado.sigla,
-                descricao: estado.nome,
-                capital: estado.capital,
-                regiao: estado.regiao,
-                capital_pais_ano_inicio: estado.capital_pais.ano_inicio,
-                capital_pais_ano_termino: estado.capital_pais.ano_fim,
+                let dados = {
+                    capital_atual: estado.capital_pais.capital,
+                    uf: estado.sigla,
+                    descricao: estado.nome,
+                    capital: estado.capital,
+                    regiao: estado.regiao,
+                    capital_pais_ano_inicio: estado.capital_pais.ano_inicio,
+                    capital_pais_ano_termino: estado.capital_pais.ano_fim,
+                }
+                arrayCpitais.push(dados)
+
+                // json = { capitais: arrayCpitais }
+                json.capitais = arrayCpitais
+
             }
-            arrayCpitais.push(dados)
 
-            // json = { capitais: arrayCpitais }
-            json.capitais = arrayCpitais
+        })
+        return json
+    }
+    //console.log(getCapitalPais())
+
+let getCidades = (sigla) => {
+
+    let jsonCidades = {};
+    let arrayCidades = [];
+    let quantidadeCidades = 0;
+    let status = false;
+
+    estadosCidades.estados.forEach(function(siglaCidades) {
+
+
+        if (siglaCidades.sigla == sigla.toUpperCase()) {
+
+            status = true;
+
+            jsonCidades = {
+                uf: siglaCidades.sigla,
+                nome: siglaCidades.nome
+            }
+
+            siglaCidades.cidades.forEach(function(nomeCidades) {
+                arrayCidades.push(nomeCidades.nome)
+
+                quantidadeCidades++
+            });
 
         }
 
-    })
-    return json
-}
- //console.log(getCapitalPais())
+    });
 
+    jsonCidades.quantidadeCidades = quantidadeCidades;
+    jsonCidades.cidades = arrayCidades;
+
+    if (status) {
+        return jsonCidades;
+    } else {
+        return status;
+    }
+
+}
+console.log(getCidades('ac'))
