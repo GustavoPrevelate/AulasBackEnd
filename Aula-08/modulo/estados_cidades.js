@@ -22504,7 +22504,7 @@ let getDadosEstados = (sigla) => {
 
 };
 
-//console.log(getDadosEstados('RJ'));
+//console.log(getDadosEstados('sp'));
 
 let getCapitalEstado = (capital) => {
 
@@ -22527,7 +22527,7 @@ let getCapitalEstado = (capital) => {
 
 };
 
-//console.log(getCapitalEstado('rj'));
+//console.log(getCapitalEstado('ac'));
 
 let getEstadosRegiao = (regiaoEstado) => {
 
@@ -22546,7 +22546,7 @@ let getEstadosRegiao = (regiaoEstado) => {
         return jSON
 
     }
-    //console.log(getEstadosRegiao('Norte'));
+    //console.log(getEstadosRegiao('Sul'));
 
 let getCapitalPais = () => {
 
@@ -22578,41 +22578,50 @@ let getCapitalPais = () => {
 
 let getCidades = (sigla) => {
 
-    let jsonCidades = {};
-    let arrayCidades = [];
-    let quantidadeCidades = 0;
-    let status = false;
+        let jsonCidades = {};
+        let arrayCidades = [];
+        let quantidadeCidades = 0;
+        let status = false;
 
-    estadosCidades.estados.forEach(function(siglaCidades) {
+        estadosCidades.estados.forEach(function(siglaCidades) {
 
 
-        if (siglaCidades.sigla == sigla.toUpperCase()) {
+            if (siglaCidades.sigla == sigla.toUpperCase()) {
 
-            status = true;
+                status = true;
 
-            jsonCidades = {
-                uf: siglaCidades.sigla,
-                nome: siglaCidades.nome
+                jsonCidades = {
+                    uf: siglaCidades.sigla,
+                    nome: siglaCidades.nome
+                }
+
+                siglaCidades.cidades.forEach(function(nomeCidades) {
+                    arrayCidades.push(nomeCidades.nome)
+
+                    quantidadeCidades++
+                });
+
             }
 
-            siglaCidades.cidades.forEach(function(nomeCidades) {
-                arrayCidades.push(nomeCidades.nome)
+        });
 
-                quantidadeCidades++
-            });
+        jsonCidades.quantidadeCidades = quantidadeCidades;
+        jsonCidades.cidades = arrayCidades;
 
+        if (status) {
+            return jsonCidades;
+        } else {
+            return status;
         }
 
-    });
-
-    jsonCidades.quantidadeCidades = quantidadeCidades;
-    jsonCidades.cidades = arrayCidades;
-
-    if (status) {
-        return jsonCidades;
-    } else {
-        return status;
     }
+    //console.log(getCidades('ac'))
 
+module.exports = {
+    getListaDeEstados,
+    getDadosEstados,
+    getCapitalEstado,
+    getEstadosRegiao,
+    getCapitalPais,
+    getCidades
 }
-console.log(getCidades('ac'))
