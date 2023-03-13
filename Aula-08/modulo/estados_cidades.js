@@ -22545,7 +22545,7 @@ let getEstadosRegiao = (regiaoEstado) => {
         let status = false;
 
         estadosCidades.estados.forEach(function(estado) {
-            if (regiaoEstado == estado.regiao.toUpperCase()) {
+            if (regiaoEstado == estado.regiao.toLowerCase() || regiaoEstado == estado.regiao.toUpperCase()) {
                 jRegiao = { uf: estado.sigla, descricao: estado.nome }
                 arrayRegiao.push(jRegiao)
                 status = true
@@ -22584,6 +22584,7 @@ let getCapitalPais = () => {
 
                 // json = { capitais: arrayCpitais }
                 json.capitais = arrayCpitais
+                status = true
 
             }
 

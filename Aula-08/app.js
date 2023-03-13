@@ -103,6 +103,8 @@ app.get('/estado/sigla/:uf', cors(), async function(request, response, next){
  
 });
 
+//endPoint: Lista a capital do estado pela sigla
+
 app.get('/capital/sigla/:uf', cors(), async function(request, response, next){
 
     let siglaCapital = request.params.uf;
@@ -128,6 +130,8 @@ app.get('/capital/sigla/:uf', cors(), async function(request, response, next){
     response.json(dadosCapital);
 });
 
+//endPoint: Lista a os estados que estão em uma determinada região pela sigla da região
+
 app.get('/regiao-estado/regiao/:regiao', cors(), async function(request, response, next){
 
     let regiaoEstado = request.params.regiao;
@@ -139,7 +143,7 @@ app.get('/regiao-estado/regiao/:regiao', cors(), async function(request, respons
         statusCode = 400;
         dadosRegiao.message = "Não é possivel processar a requisição pois a região não foi encontrada" 
     }else {
-        let regiao = estadosCidades.getEstadosRegiao(regiaoEstado);
+        let regiao = estadosCidades.getEstadosRegiao(regiaoEstado.toLowerCase());
 
         if(regiao){
             statusCode = 200;
@@ -153,6 +157,62 @@ app.get('/regiao-estado/regiao/:regiao', cors(), async function(request, respons
     response.status(statusCode);
     response.json(dadosRegiao);
 })
+
+//endPoint: Lista as antigas e a atual capital do estado
+
+app.get('/capital-pais', cors(), async function(request, response, next){
+
+    let statusCode;
+    let capitalPais = {};
+    
+
+    if(capitalPais == '' || capitalPais == undefined || !isNaN(capitalPais)){
+        statusCode = 400;
+        capitalPais.message = "Não é possivel processar a requisição" 
+    }else {
+        let capitalP = estadosCidades.getCapitalPais();
+
+        if(capitalP){
+            statusCode = 200;
+            capitalPais = capitalP;
+        }else{
+            statusCode = 404;
+            capitalPais.message = "Não é possivel processar a requisição 2";
+        }
+    }
+
+    response.status(statusCode);
+    response.json(capitalPais);
+});
+
+//endPoint: Lista as cidades de um estado pela sigla 
+
+app.get('/cidades-estados/cidades/:uf', cors(), async function(request, response, next){
+
+    let cidadesEstado = request.params.uf;
+    let statusCode;
+    let cidadesES = {};
+    
+
+    if(cidadesEstado == '' || cidadesEstado == undefined || !isNaN(cidadesEstado)){
+        statusCode = 400;
+        cidadesEs.message = "Não é possivel processar a requisição pois sigla não foi encontrada" 
+    }else {
+        let cidades = estadosCidades.getCidades(cidadesEstado);
+
+        if(cidades){
+            statusCode = 200;
+            cidadesES = cidades;
+        }else{
+            statusCode = 404;
+            cidadesES.message = "Não é possivel processar a requisição pois a sigla do estado não existe";
+        }
+    }
+
+    response.status(statusCode);
+    response.json(cidadesES);
+
+});
 
 //Permite carregar os endpoint criados e aguarda as requições
 //Pelo protocolo HTTP na porta 8080
