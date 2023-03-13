@@ -28,9 +28,13 @@ const cors = require('cors');
 //Body conteudo da mensagem --> Header e Main
 const bodyParser = require('body-parser');
 
+//Import do arquivo de funções 
+const estadosCidades = require('./modulo/estados_cidades.js');
+
 //Cria um objeto com as informações da classe express
 const app = express();
 
+//Define as permissões no header da API
 app.use((request, response, next) => {
     //Permite gerenciar a origem das requisições da API
     // * --> significa que a API será publica
@@ -49,21 +53,111 @@ app.use((request, response, next) => {
 
 
 //endPoint para listar os Estados
-app.get('/estados', cors(), async function(request, response, next) {
+app.get('/lista-de-estados', cors(), async function(request, response, next) {
 
-    const estadosCidades = require('./modulo/estados_cidades.js');
-
-    let listaDeEstados = estadosCidades.getCidades('SP');
-
-    response.json(listaDeEstados);
-    response.status(200);
+    //Chama a função que retorna os estado
+    let listaDeEstados = estadosCidades.getListaDeEstados();
+    
+    //Tratamento para validar se a função realizou o processamento
+    if(listaDeEstados){
+        //Retorna o Json e o Status code
+        response.json(listaDeEstados);
+        response.status(200);
+    }else{
+        response.status(500);
+    }
 
 });
+
+//endPoint: Lista as caracteristicas do estado pela sigla
+
+app.get('/estado/sigla/:uf', cors(), async function(request, response, next){
+    //:uf - é uma variavel que será utilizada para passagens de valores, na URL da requisição
+
+    //Recebe o valor da variável uf, que será encaminhada na URL da requisição
+    let siglaEstado = request.params.uf;
+    let statusCode;
+    let dadosEstado = {};
+
+    //Tratamento para validar os valores encaminhados no parametro 
+    if(siglaEstado == '' || siglaEstado == undefined || siglaEstado.length != 2 || !isNaN(siglaEstado))
+    {
+        statusCode = 400;
+        dadosEstado.message = "Não é possivel processar a requisição pois a sigla do estado não foi informada ou não atende a quantidade de caracteres (2 digitos)"
+    }else{
+        //Chama a função que filtra o estado pela sigla
+        let estado = estadosCidades.getDadosEstados(siglaEstado);
+        
+        //Valida se houve retorno válido da função 
+        if(estado){
+            statusCode = 200; //Estado Encontrado
+            dadosEstado = estado;
+        }else{
+            statusCode = 404; //Estado não encontrado
+            dadosEstado.message = "Não é possivel processar a requisição pois a sigla do estado não existe";
+        }
+    }
+
+    response.status(statusCode);
+    response.json(dadosEstado);
+ 
+});
+
+app.get('/capital/sigla/:uf', cors(), async function(request, response, next){
+
+    let siglaCapital = request.params.uf;
+    let statusCode;
+    let dadosCapital = {};
+
+    if(siglaCapital == '' || siglaCapital == undefined || siglaCapital.length != 2 || !isNaN(siglaCapital)){
+        statusCode = 400;
+        dadosCapital.message = "Não é possivel processar a requisição pois a sigla do estado não foi informada ou não atende a quantidade de caracteres (2 digitos)" 
+    } else{
+
+        let capital = estadosCidades.getCapitalEstado(siglaCapital);
+
+        if(capital){
+            statusCode = 200;
+            dadosCapital = capital;
+        }else{
+            statusCode = 404;
+            dadosCapital.message = "Não é possivel processar a requisição pois a sigla do estado não existe";
+        }
+    }
+    response.status(statusCode);
+    response.json(dadosCapital);
+});
+
+app.get('/regiao-estado/regiao/:regiao', cors(), async function(request, response, next){
+
+    let regiaoEstado = request.params.regiao;
+    let statusCode;
+    let dadosRegiao = {};
+    
+
+    if(regiaoEstado == '' || regiaoEstado == undefined || !isNaN(regiaoEstado)){
+        statusCode = 400;
+        dadosRegiao.message = "Não é possivel processar a requisição pois a região não foi encontrada" 
+    }else {
+        let regiao = estadosCidades.getEstadosRegiao(regiaoEstado);
+
+        if(regiao){
+            statusCode = 200;
+            dadosRegiao = regiao;
+        }else{
+            statusCode = 404;
+            dadosRegiao.message = "Não é possivel processar a requisição pois a sigla da região não existe";
+        }
+    }
+
+    response.status(statusCode);
+    response.json(dadosRegiao);
+})
 
 //Permite carregar os endpoint criados e aguarda as requições
 //Pelo protocolo HTTP na porta 8080
 
 app.listen(8080, function() {
-    console.log('Servidor aguardando requisições na porta 8080.')
+    console.log('Servidor aguardando requisições na porta 8080.');
 
 });

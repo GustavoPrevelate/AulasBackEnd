@@ -22469,12 +22469,18 @@ var estadosCidades = {
 let getListaDeEstados = () => {
 
     let uf = [];
+    let status = true;
 
     estadosCidades.estados.forEach((estado) => {
         uf.push(estado.sigla)
     })
     uf.push();
-    return { 'uf': uf, 'quantidade': uf.push() }
+    
+    if (status) {
+        return { 'uf': uf, 'quantidade': uf.push() };
+    } else {
+        return status;
+    }
 
 
 };
@@ -22509,6 +22515,7 @@ let getDadosEstados = (sigla) => {
 let getCapitalEstado = (capital) => {
 
     let dados = "";
+    
 
     estadosCidades.estados.forEach((capitaisEstado) => {
 
@@ -22524,6 +22531,7 @@ let getCapitalEstado = (capital) => {
     })
 
     return dados != "" ? dados : false
+    
 
 };
 
@@ -22534,24 +22542,32 @@ let getEstadosRegiao = (regiaoEstado) => {
         let jSON = {}
         let jRegiao = {}
         let arrayRegiao = []
+        let status = false;
 
         estadosCidades.estados.forEach(function(estado) {
-            if (regiaoEstado == estado.regiao) {
+            if (regiaoEstado == estado.regiao.toUpperCase()) {
                 jRegiao = { uf: estado.sigla, descricao: estado.nome }
                 arrayRegiao.push(jRegiao)
+                status = true
             }
         })
         jSON = { regiao: regiaoEstado, estados: arrayRegiao }
 
-        return jSON
+        if (status) {
+            return jSON;
+        } else {
+            return status;
+        }
 
     }
-    //console.log(getEstadosRegiao('Sul'));
+//console.log(getEstadosRegiao('Sul'));
 
 let getCapitalPais = () => {
 
         let json = {}
         let arrayCpitais = []
+        let status = false;
+
         estadosCidades.estados.forEach(function(estado) {
             if (estado.capital_pais != undefined) {
 
@@ -22572,7 +22588,12 @@ let getCapitalPais = () => {
             }
 
         })
-        return json
+        
+        if (status) {
+            return json;
+        } else {
+            return status;
+        }
     }
     //console.log(getCapitalPais())
 
