@@ -53,7 +53,7 @@ app.use((request, response, next) => {
 
 
 //endPoint para listar os Estados
-app.get('/lista-de-estados', cors(), async function(request, response, next) {
+app.get('/v1/senai/lista-de-estados', cors(), async function(request, response, next) {
 
     //Chama a função que retorna os estado
     let listaDeEstados = estadosCidades.getListaDeEstados();
@@ -71,7 +71,7 @@ app.get('/lista-de-estados', cors(), async function(request, response, next) {
 
 //endPoint: Lista as caracteristicas do estado pela sigla
 
-app.get('/estado/sigla/:uf', cors(), async function(request, response, next){
+app.get('v1/senai/estado/sigla/:uf', cors(), async function(request, response, next){
     //:uf - é uma variavel que será utilizada para passagens de valores, na URL da requisição
 
     //Recebe o valor da variável uf, que será encaminhada na URL da requisição
@@ -105,7 +105,7 @@ app.get('/estado/sigla/:uf', cors(), async function(request, response, next){
 
 //endPoint: Lista a capital do estado pela sigla
 
-app.get('/capital/sigla/:uf', cors(), async function(request, response, next){
+app.get('v1/senai/capital/sigla/:uf', cors(), async function(request, response, next){
 
     let siglaCapital = request.params.uf;
     let statusCode;
@@ -132,7 +132,7 @@ app.get('/capital/sigla/:uf', cors(), async function(request, response, next){
 
 //endPoint: Lista a os estados que estão em uma determinada região pela sigla da região
 
-app.get('/regiao-estado/regiao/:regiao', cors(), async function(request, response, next){
+app.get('/v1/senai/regiao-estado/regiao/:regiao', cors(), async function(request, response, next){
 
     let regiaoEstado = request.params.regiao;
     let statusCode;
@@ -160,7 +160,7 @@ app.get('/regiao-estado/regiao/:regiao', cors(), async function(request, respons
 
 //endPoint: Lista as antigas e a atual capital do estado
 
-app.get('/capital-pais', cors(), async function(request, response, next){
+app.get('/v1/senai/capital-pais', cors(), async function(request, response, next){
 
     let statusCode;
     let capitalPais = {};
@@ -187,30 +187,111 @@ app.get('/capital-pais', cors(), async function(request, response, next){
 
 //endPoint: Lista as cidades de um estado pela sigla 
 
-app.get('/cidades-estados/cidades/:uf', cors(), async function(request, response, next){
+// app.get('/cidades-estados/cidades/:uf', cors(), async function(request, response, next){
 
-    let cidadesEstado = request.params.uf;
-    let statusCode;
-    let cidadesES = {};
+//     let cidadesEstado = request.params.uf;
+//     let statusCode;
+//     let cidadesES = {};
     
 
-    if(cidadesEstado == '' || cidadesEstado == undefined || !isNaN(cidadesEstado)){
+//     if(cidadesEstado == '' || cidadesEstado == undefined || !isNaN(cidadesEstado)){
+//         statusCode = 400;
+//         cidadesEs.message = "Não é possivel processar a requisição pois sigla não foi encontrada" 
+//     }else {
+//         let cidades = estadosCidades.getCidades(cidadesEstado);
+
+//         if(cidades){
+//             statusCode = 200;
+//             cidadesES = cidades;
+//         }else{
+//             statusCode = 404;
+//             cidadesES.message = "Não é possivel processar a requisição pois a sigla do estado não existe";
+//         }
+//     }
+
+//     response.status(statusCode);
+//     response.json(cidadesES);
+
+// });
+
+//EndPoint: Lista de cidades filtrada pela sigla do estado 
+app.get('/v1/senai/cidades', cors(), async function(request, response, next) {
+
+    //Recebe o valor da variavel que será enviada por QueryString
+        //Ex: www.uol.com.br?uf=sp&cep=085561008$nome=jose
+        /**
+         *      Usamos a query para receber diversas variaveis para realizar filtros
+         *      Usamos o params para receber o ID (PK), geralmente para fazer o PUT, DELETE, GET 
+         */
+    let siglaEstado = request.query.uf;
+    // let cep = request.query.cep;
+    // console.log(siglaEstado)
+    // console.log(cep)
+
+    let statusCode;
+    let dadosCidades = {};
+    
+
+    if(siglaEstado == '' || siglaEstado == undefined || !isNaN(siglaEstado)){
         statusCode = 400;
         cidadesEs.message = "Não é possivel processar a requisição pois sigla não foi encontrada" 
     }else {
-        let cidades = estadosCidades.getCidades(cidadesEstado);
+        let cidades = estadosCidades.getCidades(siglaEstado);
 
         if(cidades){
             statusCode = 200;
-            cidadesES = cidades;
+            dadosCidades = cidades;
         }else{
             statusCode = 404;
-            cidadesES.message = "Não é possivel processar a requisição pois a sigla do estado não existe";
+            dadosCidades.message = "Não é possivel processar a requisição pois a sigla do estado não existe";
         }
     }
 
     response.status(statusCode);
-    response.json(cidadesES);
+    response.json(dadosCidades);
+
+
+
+});
+
+//EndPoint versão 2: Lista de cidades filtrada pela sigla do estado
+//Com mais detalhes
+app.get('/v2/senai/cidades', cors(), async function(request, response, next) {
+
+    //Recebe o valor da variavel que será enviada por QueryString
+        //Ex: www.uol.com.br?uf=sp&cep=085561008$nome=jose
+        /**
+         *      Usamos a query para receber diversas variaveis para realizar filtros
+         *      Usamos o params para receber o ID (PK), geralmente para fazer o PUT, DELETE, GET 
+         */
+    let siglaEstado = request.query.uf;
+    // let cep = request.query.cep;
+    // console.log(siglaEstado)
+    // console.log(cep)
+
+    let statusCode;
+    let dadosCidades = {};
+    
+
+    if(siglaEstado == '' || siglaEstado == undefined || !isNaN(siglaEstado)){
+        statusCode = 400;
+        cidadesEs.message = "Não é possivel processar a requisição pois sigla não foi encontrada" 
+    }else {
+        let cidades = estadosCidades.getCidades(siglaEstado);
+
+        if(cidades){
+            statusCode = 200;
+            dadosCidades = cidades;
+        }else{
+            statusCode = 404;
+            dadosCidades.message = "Não é possivel processar a requisição pois a sigla do estado não existe";
+        }
+    }
+
+    response.status(statusCode);
+    response.json(dadosCidades);
+
+
 
 });
 
