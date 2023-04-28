@@ -61,11 +61,15 @@
  * Data: 14/04/2023
  ******************************************************************************************/
 
+//Criando uma const para realizar o processo de padronização de dados que vão chegar no body da requisição
+const bodyJSON = bodyParser.json();
+
+// Import da controller do Aluno
+const controllerAluno = require('./controller/controller_aluno.js');
+
  //EndPoint: Retorna todos os dados de alunos
  app.get('/v1/lion-school/aluno', cors(), async function(request, response){
-   // Import da controller do Aluno
-   let controllerAluno = require('./controller/controller_aluno.js');
-
+   
    // solicita a controller que retorne todos os alunos do BD
    let dados = await controllerAluno.selecionarTodosAlunos();
 
@@ -85,7 +89,18 @@
 })
 
  //EndPoint: Inserir um novo aluno
- app.post('/v1/lion-school/aluno/:id', cors(), async function(request, response){
+ app.post('/v1/lion-school/aluno', cors(), bodyJSON, async function(request, response){
+
+   //Recebe os dados encaminhados do body da requisição
+   let dadosBody = request.body;
+
+   // Envia os dados para a controller
+   let resultInsertDados = await controllerAluno.inserirAluno(dadosBody);
+
+   // Retorna o status code e a message
+   response.status(resultInsertDados.status);
+   response.json(resultInsertDados)
+
 
 })
 

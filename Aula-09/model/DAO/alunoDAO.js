@@ -7,9 +7,36 @@
 
 const { Prisma } = require('@prisma/client');
 
- //Inserir um novo registro no Banco de Dados
- const insertAluno = function(dadosAluno){
+// Import da biblioteca do prisma client (responsável por manipular dados no BD)
+var { PrismaClient } = require('@prisma/client');
 
+// Instancia da classe do PrismaClient
+var prisma = new PrismaClient();
+
+ //Inserir um novo registro no Banco de Dados
+const insertAluno = async function(dadosAluno){
+
+    // Script SQL para inserir os dados no BD
+    sql = ` insert into tbl_aluno (nome, 
+                                   cpf, 
+                                   rg, 
+                                   data_nascimento, 
+                                   email)
+                                   values
+                                   (    '${dadosAluno.nome}',
+                                       '${dadosAluno.cpf}',
+                                        '${dadosAluno.rg}',
+                                        '${dadosAluno.data_nascimento}',
+                                        '${dadosAluno.email}'
+                                    )`;
+    //Executa o script SQL no BD e recebemos o retorno se deu certo ou não 
+    let result = await prisma.$executeRawUnsafe(sql);
+    
+    if(result){
+        return true;
+    }else{
+        return false;
+    }
  }
 
  //Atualizar um registro existente no Banco de Dados
@@ -24,12 +51,6 @@ const deleteAluno = function(id){
 
 //Retorna todos os registro do Banco de Dados
 const selectAllAluno = async function(){
-
-    // Import da biblioteca do prisma client (responsável por manipular dados no BD)
-    let { PrismaClient } = require('@prisma/client');
-
-    // Instancia da classe do PrismaClient
-    let prisma = new PrismaClient();
 
     // Variavel com o scriptSQL para executar no BD
     let sql = 'select * from tbl_aluno';
@@ -53,8 +74,16 @@ const selectAllAluno = async function(){
 //Retorna um registro filtrado pelo ID do Banco de Dados
 const selectByIdAluno = function(id){
 
+    let { PrismaClient } = require('@prisma/client');
+
+    let prisma = new PrismaClient();
+
+    
+
+
 }
 
 module.exports = {
-    selectAllAluno
+    selectAllAluno,
+    insertAluno
 }
