@@ -105,13 +105,35 @@ const controllerAluno = require('./controller/controller_aluno.js');
 })
 
 //EndPoint: Atualiza um aluno pelo id
-app.put('/v1/lion-school/aluno/:id', cors(), async function(request, response){
+app.put('/v1/lion-school/aluno/:id', cors(), bodyJSON, async function(request, response){
+   // Recebe os dados do body
+   let dadosBody = request.body;
+
+   // Recebe o id do aluno
+   let idAluno = request.params.id;
+
+   // Encaminha os dados para serem atualizados
+   let resultUpdateDados = await controllerAluno.atualizarAluno(dadosBody, idAluno)
+
+   response.status(resultUpdateDados.status);
+   response.json(resultUpdateDados);
+
+
+
 
 })
 
 //EndPoint: Exclui um aluno pelo id
 app.delete('/v1/lion-school/aluno/:id', cors(), async function(request, response){
 
+// Recebe o id do aluno
+let idAluno = request.params.id;
+
+// Encaminha os dados para serem atualizados
+let resultDeletDados = await controllerAluno.deletarAluno(idAluno)
+
+response.status(resultDeletDados.status);
+response.json(resultDeletDados);
 })
 
 app.listen(8080, function(){
