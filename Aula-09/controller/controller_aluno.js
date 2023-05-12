@@ -96,21 +96,46 @@ const selecionarTodosAlunos = async function(){
     if(dadosAluno){
 
         // Adiciona o array de alunos e um JSON para retornar ao app
+        dadosJSON.status = 200;
+        dadosJSON.count = dadosAluno.length;
         dadosJSON.alunos = dadosAluno;
         return dadosJSON;
     }else {
-        return false;
+        return message.ERROR_NOT_FOUND;
     }
 };
 
 // Função para buscar um item filtrando pelo ID, que será encaminhado para a model
-const buscarIdAluno = function(id){
-     
+const buscarIdAluno = async function(id){
+
+    if(id == '' || id == undefined || isNaN(id)){
+        return message.ERRO_REQUIRED_ID
+    }else{
+        // Solicita ao DAO todos os alunos do BD
+        let dadosAluno = await alunoDAO.selectByIdAluno(id);
+
+        // Cria um objeto do tipo JSON
+        let dadosJSON = {};
+
+        // Valida se o BD teve registros
+        if(dadosAluno){
+
+        // Adiciona o array de alunos e um JSON para retornar ao app
+        dadosJSON.status = 200;
+        dadosJSON.alunos = dadosAluno;
+            return dadosJSON;
+        }else {
+            return message.ERROR_NOT_FOUND;
+        }    
+    }
+
+    
 };
 
 module.exports = {
     selecionarTodosAlunos,
     inserirAluno,
     atualizarAluno,
-    deletarAluno
+    deletarAluno,
+    buscarIdAluno
 }

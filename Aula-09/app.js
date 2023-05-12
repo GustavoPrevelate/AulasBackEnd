@@ -75,13 +75,8 @@ var message = require('./controller/modulo/config.js');
    let dados = await controllerAluno.selecionarTodosAlunos();
 
    // valida se existem registros para retornar na requisição
-   if(dados){
-      response.json(dados);
-      response.status(200);
-   }else{
-      response.json();
-      response.status(404)
-   }
+   response.status(dados.status)
+   response.json(dados)
  })
 
  //EndPoint: Retorna dados do aluno pelo id

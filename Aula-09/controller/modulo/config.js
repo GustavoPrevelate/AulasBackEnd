@@ -10,9 +10,13 @@ const ERRO_REQUIRED_DATA = {stauts: 400, message: 'Existem dados obrigatórios q
 
 const ERRO_REQUIRED_ID = {stauts: 400, message: 'O atributo ID é obrigatório na requisição.'};
 
-const ERROR_INTERNAL_SERVER = {stauts: 500, message: 'Erro interno no servidor de Bando de Dados.'};
+const ERROR_NOT_FOUND = {stauts: 404, message: 'Nenhum registro encontrado na reguisilção'};
 
 const ERROR_INVALID_CONTENT_TYPE = {status: 415, message: 'O tipo de mídia Content-typeda solicitação não é compatível com o servidor, [application/json].'}
+
+const ERROR_INTERNAL_SERVER = {stauts: 500, message: 'Erro interno no servidor de Bando de Dados.'};
+
+
 
 
 
@@ -25,10 +29,11 @@ const DELETED_ITEM = {status: 200, message: 'Registro Deletado com sucesso.'};
 
 module.exports = {
     ERRO_REQUIRED_DATA,
-    ERROR_INTERNAL_SERVER,
     ERRO_REQUIRED_ID,
+    ERROR_NOT_FOUND,
     ERROR_INVALID_CONTENT_TYPE,
-    CREATED_ITEM,
+    ERROR_INTERNAL_SERVER,
     UPDATED_ITEM,
-    DELETED_ITEM
+    DELETED_ITEM,
+    CREATED_ITEM
 }
