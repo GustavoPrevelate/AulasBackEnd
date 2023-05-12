@@ -28,9 +28,17 @@ const inserirAluno = async function(dadosAluno){
            let status = await alunoDAO.insertAluno(dadosAluno);
 
            if(status){
-               return  message.CREATED_ITEM;
+                let dadosJSON = {};
+
+                let alunoNovoId =  await alunoDAO.selectLastId();
+                dadosAluno.id = alunoNovoId;
+           
+                dadosJSON.status = message.CREATED_ITEM.status;
+                dadosJSON.aluno = dadosAluno;
+
+                return dadosJSON;
            }else{
-               return message.ERROR_INTERNAL_SERVER;
+                return message.ERROR_INTERNAL_SERVER;
            }
        }
 
@@ -57,11 +65,22 @@ const atualizarAluno = async function(dadosAluno, idAluno){
         // Encaminha para o DAO os dados para serem alterados
         let status = await alunoDAO.updateAluno(dadosAluno);
 
+
         if(status){
-            return message.UPDATED_ITEM;
-        }else{
+            let dadosJSON = {};
+
+            let alunoNovoId =  await alunoDAO.selectLastId();
+            dadosAluno.id = alunoNovoId;
+            
+            dadosJSON.status = message.CREATED_ITEM.status;
+            dadosJSON.aluno = dadosAluno;
+
+            return dadosJSON;
+       }else{
             return message.ERROR_INTERNAL_SERVER;
-        }
+       }
+
+        
     }
 };
 
@@ -131,6 +150,8 @@ const buscarIdAluno = async function(id){
 
     
 };
+
+
 
 module.exports = {
     selecionarTodosAlunos,

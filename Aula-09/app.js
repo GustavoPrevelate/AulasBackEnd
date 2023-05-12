@@ -87,7 +87,7 @@ var message = require('./controller/modulo/config.js');
 
    // solicita a controller que retorne todos os alunos do BD
    let dados = await controllerAluno.buscarIdAluno(idAluno);
-   
+
    // valida se existem registros para retornar na requisição
    response.status(dados.status)
    response.json(dados)
