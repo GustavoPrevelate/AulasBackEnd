@@ -82,6 +82,15 @@ var message = require('./controller/modulo/config.js');
  //EndPoint: Retorna dados do aluno pelo id
  app.get('/v1/lion-school/aluno/:id', cors(), async function(request, response){
 
+   // Recebe o ID enviado na requisição
+   let idAluno = request.params.id;
+
+   // solicita a controller que retorne todos os alunos do BD
+   let dados = await controllerAluno.buscarIdAluno(idAluno);
+   
+   // valida se existem registros para retornar na requisição
+   response.status(dados.status)
+   response.json(dados)
 })
 
  //EndPoint: Inserir um novo aluno

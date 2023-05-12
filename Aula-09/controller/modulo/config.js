@@ -6,15 +6,15 @@
  ******************************************************************************************/
 
 /*************************************Constantes de ERROS**********************************/
-const ERRO_REQUIRED_DATA = {stauts: 400, message: 'Existem dados obrigatórios que não foram preenchidos.'};
+const ERRO_REQUIRED_DATA = {status: 400, message: 'Existem dados obrigatórios que não foram preenchidos.'};
 
-const ERRO_REQUIRED_ID = {stauts: 400, message: 'O atributo ID é obrigatório na requisição.'};
+const ERRO_REQUIRED_ID = {status: 400, message: 'O atributo ID é obrigatório na requisição.'};
 
-const ERROR_NOT_FOUND = {stauts: 404, message: 'Nenhum registro encontrado na reguisilção'};
+const ERROR_NOT_FOUND = {status: 404, message: 'Nenhum registro encontrado na reguisilção'};
 
 const ERROR_INVALID_CONTENT_TYPE = {status: 415, message: 'O tipo de mídia Content-typeda solicitação não é compatível com o servidor, [application/json].'}
 
-const ERROR_INTERNAL_SERVER = {stauts: 500, message: 'Erro interno no servidor de Bando de Dados.'};
+const ERROR_INTERNAL_SERVER = {status: 500, message: 'Erro interno no servidor de Bando de Dados.'};
 
 
 
